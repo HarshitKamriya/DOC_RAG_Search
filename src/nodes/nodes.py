@@ -27,7 +27,7 @@ class RAGNode:
         Retruns:
             updated RAG state with retrived documents
         """
-        docs = self.retriver.invoke(state:question)
+        docs = self.retriver.invoke(state.question)
         return RAGState(
             question=state.question,
             retrived_docs=docs
