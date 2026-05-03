@@ -57,14 +57,14 @@ def initialize_rag():
         urls = Config.DEFAULT_URLS
         
         # Process documents
-        documents = doc_processor.process_urls(urls)
+        documents = doc_processor.process_url(urls)
         
         # Create vector store
         vector_store.create_vectorstore(documents)
         
         # Build graph
         graph_builder = GraphBuilder(
-            retriever=vector_store.get_retriever(),
+            retriver=vector_store.get_retriver(),
             llm=llm
         )
         graph_builder.build()
@@ -125,7 +125,7 @@ def main():
                 
                 # Show retrieved docs in expander
                 with st.expander("📄 Source Documents"):
-                    for i, doc in enumerate(result['retrieved_docs'], 1):
+                    for i, doc in enumerate(result['retrived_docs'], 1):
                         st.text_area(
                             f"Document {i}",
                             doc.page_content[:300] + "...",

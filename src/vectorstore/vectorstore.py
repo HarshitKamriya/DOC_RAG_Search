@@ -4,16 +4,16 @@ from typing import List
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_classic.schema import Document
+from langchain_core.documents import Document
 
 class VectorStore:
     """Manges vector store application"""
     def __init__(self):
-        self.embeddings = HuggingFaceEmbeddings()
+        self.embeddings = HuggingFaceEmbeddings(model_name = "sentence-transformers/all-MiniLM-L6-v2")
         self.vectorstore = None
         self.retriver = None
 
-    def create_retriver(self,documents : List[Document]):
+    def create_vectorstore(self, documents: List[Document]):
         """
         Create vector store from documents
 
@@ -21,7 +21,7 @@ class VectorStore:
             documents : List of documents to embed
         """
 
-        self.vectorstore = FAISS.from_documents(documents,self.embedding)
+        self.vectorstore = FAISS.from_documents(documents, self.embeddings)
 
         self.retriver = self.vectorstore.as_retriever() 
 

@@ -67,12 +67,12 @@ class RAGNodes:
     def _build_agent(self):
         """ReAct agent with tools"""
         tools = self._build_tools()
-        system_prompt = {
+        system_prompt = (
             "You are a helpful RAG agent. "
             "Prefer 'retriver' for user-provided docs; use 'wikipedia' for general knowledge. "
             "Return only the final user answer."
-        }
-        self._agent = create_react_agent(self.llm,tools=tools,prompt = system_prompt)
+        )
+        self._agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt)
 
 
     def generate_answer(self,state: RAGState) -> RAGState:
@@ -82,7 +82,7 @@ class RAGNodes:
         if self._agent is None:
             self._build_agent()
 
-        result = self._agent.invoke({"message":[HumanMessage(content=state.question)]})
+        result = self._agent.invoke({"messages": [HumanMessage(content=state.question)]})
 
         messages = result.get("messages",[])
 

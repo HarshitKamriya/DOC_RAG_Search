@@ -3,7 +3,7 @@
 from typing import List
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_classic.schema import Document
+from langchain_core.documents import Document
 
 
 from typing import List, Union
@@ -69,17 +69,17 @@ class DocumentProcessor:
         for src in sources:
             if src.startswith("http://") or src.startswith("https://"):
                 docs.extend(self.load_from_url(src))
-            
-            path = Path("data")
-            if path.is_dir(): #Pdf directory
-                docs.extend(self.load_from_pdf_dir(path))
-            elif path.suffix.lower() == ".txt":
-                docs.extend(self.load_from_txt(path))
             else:
-                raise ValueError(
-                    f"Unsupported source type: {src}. "
-                    "Use URL, .txt file , or PDF directory."
-                )
+                path = Path(src)
+                if path.is_dir():  # PDF directory
+                    docs.extend(self.load_from_pdf_dir(path))
+                elif path.suffix.lower() == ".txt":
+                    docs.extend(self.load_from_txt(path))
+                else:
+                    raise ValueError(
+                        f"Unsupported source type: {src}. "
+                        "Use URL, .txt file, or PDF directory."
+                    )
             
         return docs
     
@@ -107,7 +107,7 @@ class DocumentProcessor:
             List of processed document chunks
         
         """
-        docs = self.load_documents(urls)
+        docs = self.load_document(urls)
         return self.split_documents(docs)
     
 
