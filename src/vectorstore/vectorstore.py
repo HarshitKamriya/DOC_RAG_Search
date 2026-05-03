@@ -3,13 +3,13 @@
 from typing import List
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
-from langchain.embeddings import HuggingFaceEmbedding
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_classic.schema import Document
 
 class VectorStore:
     """Manges vector store application"""
     def __init__(self):
-        self.embeddings = HuggingFaceEmbedding()
+        self.embeddings = HuggingFaceEmbeddings()
         self.vectorstore = None
         self.retriver = None
 
