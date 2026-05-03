@@ -4,15 +4,19 @@ import os
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 
-# Load environment variables
+# Load environment variables from .env (local dev)
 load_dotenv()
+
+def _get_secret(key: str) -> str:
+    """Read from Streamlit secrets (cloud) or .env (local)."""
+    try:
+        import streamlit as st
+        return st.secrets.get(key) or os.getenv(key, "")
+    except Exception:
+        return os.getenv(key, "")
 
 class Config:
     """Configuration class for RAG system"""
-    
-    # API Keys
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     
     # Model Configuration
     LLM_MODEL = "groq:qwen/qwen3-32b"
@@ -30,5 +34,6 @@ class Config:
     @classmethod
     def get_llm(cls):
         """Initialize and return the LLM model"""
-        os.environ["GROQ_API_KEY"] = cls.GROQ_API_KEY
-        return init_chat_model(cls.LLM_MODEL)
+        groq_key = _get_secret("GROQ_API_KEY")
+        os.environ["GROQ_API_KEY"] = groq_key
+        return init_chat_model(cls.LLM_MODEL)
