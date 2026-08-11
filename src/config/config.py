@@ -19,7 +19,7 @@ class Config:
     """Configuration class for RAG system"""
     
     # Model Configuration
-    LLM_MODEL = "groq:qwen/qwen3-32b"
+    LLM_MODEL = "groq/llama-3.1-8b-instant"
     
     # Document Processing
     CHUNK_SIZE = 500
@@ -36,4 +36,4 @@ class Config:
         """Initialize and return the LLM model"""
         groq_key = _get_secret("GROQ_API_KEY")
         os.environ["GROQ_API_KEY"] = groq_key
-        return init_chat_model(cls.LLM_MODEL)
+        return init_chat_model(cls.LLM_MODEL)
