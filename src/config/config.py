@@ -19,7 +19,7 @@ class Config:
     """Configuration class for RAG system"""
     
     # Model Configuration
-    LLM_MODEL = "llama-3.1-8b-instant"
+    LLM_MODEL = "llama-3.3-70b-versatile"
     
     # Document Processing
     CHUNK_SIZE = 500
